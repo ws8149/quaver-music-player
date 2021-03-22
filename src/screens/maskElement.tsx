@@ -4,7 +4,12 @@ import {LinearGradient} from 'expo-linear-gradient';
 
 export default (props) => 
 <View style={{ backgroundColor: 'transparent', flex: 1, }}>
- <LinearGradient colors={['#FFFFFF00', '#FFFFFF', '#FFFFFF00']} style={{flex: 1}}/> 
+ <LinearGradient 
+  colors={['#FFFFFF00', '#FFFFFF', '#FFFFFF00']} 
+  style={{flex: 1 }} 
+  start={{ x: 0, y: 1 }}
+  end={{ x: 1, y: 1 }}
+ /> 
 </View>
 var styles = StyleSheet.create({
  linearGradient: {

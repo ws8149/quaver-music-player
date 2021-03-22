@@ -10,7 +10,11 @@ import { Audio } from 'expo-av';
 import { Sound } from 'expo-av/build/Audio';
 import { AppText } from './src/components/AppText';
 
-import { ArtistsScreen }  from './src/screens/ArtistsScreen'
+import { ArtistsScreen } from './src/screens/ArtistsScreen'
+import MaskedView from '@react-native-masked-view/masked-view';
+import MaskedElement from './src/screens/maskElement';
+import { MyTabBar } from './src/components/MyTabBar';
+
 
 function AlbumsScreen() {
   return (
@@ -91,9 +95,12 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
       <NavigationContainer>
-        <Tab.Navigator tabBarOptions={tabBarOptions}>
+        <Tab.Navigator 
+          tabBar={props => <MyTabBar {...props} />}
+          tabBarOptions={tabBarOptions}
+        >
           <Tab.Screen name="Tracks" component={TracksScreen} />
           <Tab.Screen name="Artists" component={ArtistsScreen} />
           <Tab.Screen name="Albums" component={AlbumsScreen} />
@@ -113,9 +120,15 @@ const headerStyle = {
   marginTop: 30
 }
 
+
 const tabBarOptions = {
   scrollEnabled: true,
+  activeTintColor: 'white',
+  indicatorStyle: { backgroundColor: 'white' },
   tabStyle: {
-    width: 100
+    width: 100,
+  },
+  style: {
+    backgroundColor: 'black',
   }
 }
