@@ -8,25 +8,9 @@ import * as MediaLibrary from 'expo-media-library';
 import { MediaType } from 'expo-media-library';
 import { Audio } from 'expo-av';
 import { Sound } from 'expo-av/build/Audio';
-import { LinearGradient } from 'expo-linear-gradient';
+import { AppText } from './src/components/AppText';
 
-function ArtistsScreen() {
-  return (
-    <View style={{ width: 100, height: 100, backgroundColor: '#fff' }}>
-      <ScrollView>
-        <Button title="Shuffle" onPress={() => {}} />
-        <Button title="Shuffle" onPress={() => {}} />
-        <Button title="Shuffle" onPress={() => {}} />
-        <Button title="Shuffle" onPress={() => {}} />
-      </ScrollView>
-      <LinearGradient
-        style={{ position: 'absolute', bottom: 0, width: 100, height: 20 }}
-        colors={['rgba(255, 255, 255, 0.1)', 'rgba(255, 255, 255, 0.8)']}
-        pointerEvents={'none'}
-      />
-    </View>
-  );
-}
+import { ArtistsScreen }  from './src/screens/ArtistsScreen'
 
 function AlbumsScreen() {
   return (
