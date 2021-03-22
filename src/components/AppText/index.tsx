@@ -30,7 +30,7 @@ export const AppText = ({
   right = 0,
   bottom = 0,
   left = 0,
-  size = 14,
+  size = 18,
   bold = false,
   uppercase = false,
   color = undefined,
@@ -44,7 +44,8 @@ export const AppText = ({
     marginRight: right,
     marginBottom: bottom,
     marginLeft: left,
-    color: color ? color : 'black',
+    fontFamily: 'Inter_900Black',
+    color: color ? color : 'white',
     textTransform: uppercase ? 'uppercase' : 'none'
   }
 

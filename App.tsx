@@ -1,134 +1,68 @@
 import * as React from 'react';
-import { Button, ScrollView, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-import * as MediaLibrary from 'expo-media-library';
-import { MediaType } from 'expo-media-library';
-import { Audio } from 'expo-av';
-import { Sound } from 'expo-av/build/Audio';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AppText } from './src/components/AppText';
+import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
+import AppLoading from 'expo-app-loading';
 
-import { ArtistsScreen } from './src/screens/ArtistsScreen'
-import MaskedView from '@react-native-masked-view/masked-view';
-import MaskedElement from './src/screens/maskElement';
-import { MyTabBar } from './src/components/MyTabBar';
-
-
-function AlbumsScreen() {
+function HomeScreen() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Albums!</Text>
+      <AppText>Home!</AppText>
     </View>
   );
 }
 
-function GenresScreen() {
+function SettingsScreen() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Genres!</Text>
+      <AppText>Settings!</AppText>
     </View>
   );
 }
 
-function PlaylistsScreen() {
+const Tab = createBottomTabNavigator();
+
+function MyTabs() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Playlists!</Text>
-    </View>
+    <Tab.Navigator 
+      tabBarOptions={{
+        activeBackgroundColor: 'black',
+        inactiveBackgroundColor: 'black',
+        activeTintColor: 'white',
+        labelStyle: {
+          fontSize: 16,
+          fontFamily: 'Inter_900Black',          
+        },                        
+        tabStyle: {
+          justifyContent: 'center',
+          alignItems: 'center',
+        }
+      }}
+      sceneContainerStyle={{
+        backgroundColor: 'black'
+      }}
+    >
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Settings" component={SettingsScreen} />      
+    </Tab.Navigator>
   );
 }
-
-const Tab = createMaterialTopTabNavigator();
 
 export default function App() {
+  let [fontsLoaded] = useFonts({
+    Inter_900Black,
+  });
 
-  const [musicFiles, setMusicFiles] = React.useState<Array<MediaLibrary.Asset>>();
-  const [sound, setSound] = React.useState<Audio.Sound>(new Audio.Sound());
-
-  /** Load music files */
-  React.useEffect(() => {
-    const getMusicFiles = async () => {
-      const permission = await MediaLibrary.getPermissionsAsync()
-
-      if (permission.granted) {
-        const mediaLibrary = await MediaLibrary.getAssetsAsync({
-          mediaType: MediaType.audio
-        })
-
-        setMusicFiles(mediaLibrary.assets)
-      } else {
-        await MediaLibrary.requestPermissionsAsync()
-      }
-
-    }
-
-    getMusicFiles()
-  }, [])
-
-  const TracksScreen = () => {
-    const shuffle = async () => {
-      console.log(musicFiles[0].uri)
-
-      await sound.loadAsync({
-        uri: musicFiles[0].uri
-      });
-
-      setSound(sound);
-
-      await sound.playAsync()
-
-
-    }
-
-    const pause = async () => {
-      sound?.pauseAsync()
-    }
-
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Button title="Shuffle" onPress={shuffle} />
-        <Button title="pause" onPress={pause} />
-      </View>
-    );
+  if (!fontsLoaded) {
+    return <AppLoading />;
   }
-
+  
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
-      <NavigationContainer>
-        <Tab.Navigator 
-          tabBar={props => <MyTabBar {...props} />}
-          tabBarOptions={tabBarOptions}
-        >
-          <Tab.Screen name="Tracks" component={TracksScreen} />
-          <Tab.Screen name="Artists" component={ArtistsScreen} />
-          <Tab.Screen name="Albums" component={AlbumsScreen} />
-          <Tab.Screen name="Genres" component={GenresScreen} />
-          <Tab.Screen name="Playlists" component={PlaylistsScreen} />
-        </Tab.Navigator>
-      </NavigationContainer>
-    </SafeAreaView>
+    <NavigationContainer>
+      <MyTabs />
+    </NavigationContainer>
   );
 }
 
-const headerStyle = {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  marginLeft: 10,
-  marginRight: 10,
-  marginTop: 30
-}
-
-
-const tabBarOptions = {
-  scrollEnabled: true,
-  activeTintColor: 'white',
-  indicatorStyle: { backgroundColor: 'white' },
-  tabStyle: {
-    width: 100,
-  },
-  style: {
-    backgroundColor: 'black',
-  }
-}
